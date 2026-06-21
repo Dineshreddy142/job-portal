@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #334155; margin: 0; padding: 0; background-color: #f8fafc; }
+        .container { max-width: 600px; margin: 40px auto; padding: 20px; }
+        .card { background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0; }
+        .header { background-color: #0052cc; padding: 32px; text-align: center; color: #ffffff; }
+        .content { padding: 40px; text-align: center; }
+        .otp-code { font-size: 36px; font-weight: 800; letter-spacing: 0.2em; color: #0052cc; background-color: #f0f7ff; padding: 20px; border-radius: 12px; margin: 24px 0; display: inline-block; border: 2px dashed #0052cc; }
+        .footer { text-align: center; padding: 32px; color: #94a3b8; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1 style="margin:0;">Verification Code</h1>
+            </div>
+            <div class="content">
+                <p>Please use the following One-Time Password (OTP) to complete your registration on <strong>Smart Career Hub</strong>.</p>
+                <div class="otp-code" th:text="${otpCode}">123456</div>
+                <p>This code is valid for <strong th:text="${expiryMinutes}">5</strong> minutes.</p>
+                <p style="color: #64748b; font-size: 13px;">If you didn't request this code, please ignore this email.</p>
+            </div>
+            <div class="footer">
+                <p>&copy; 2026 Smart Career Hub Inc.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

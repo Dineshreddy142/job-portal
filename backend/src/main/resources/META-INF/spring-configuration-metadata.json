@@ -1,0 +1,41 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "type": "com.jobportal.config.JwtProperties",
+      "sourceType": "com.jobportal.config.JwtProperties"
+    },
+    {
+      "name": "file",
+      "type": "com.jobportal.config.FileProperties",
+      "sourceType": "com.jobportal.config.FileProperties"
+    },
+    {
+      "name": "app.reset",
+      "type": "com.jobportal.config.AppResetProperties",
+      "sourceType": "com.jobportal.config.AppResetProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "jwt.secret",
+      "type": "java.lang.String",
+      "sourceType": "com.jobportal.config.JwtProperties"
+    },
+    {
+      "name": "jwt.expiration",
+      "type": "java.lang.Long",
+      "sourceType": "com.jobportal.config.JwtProperties"
+    },
+    {
+      "name": "file.upload-dir",
+      "type": "java.lang.String",
+      "sourceType": "com.jobportal.config.FileProperties"
+    },
+    {
+      "name": "app.reset.base-url",
+      "type": "java.lang.String",
+      "sourceType": "com.jobportal.config.AppResetProperties"
+    }
+  ]
+}
