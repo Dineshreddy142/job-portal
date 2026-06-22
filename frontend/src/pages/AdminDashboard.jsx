@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import api from '../services/api';
 import { AuthContext } from '../contexts/AuthContext';
@@ -130,7 +130,7 @@ const AdminDashboard = () => {
           <h2 className="text-4xl font-heading font-bold text-slate-900 dark:text-white transition-colors">Platform Oversight</h2>
           <p className="text-slate-500 dark:text-slate-400 font-medium transition-colors">Global management and system health monitoring.</p>
         </div>
-        <Button variant="secondary" onClick={fetchData}>ðŸ”„ Refresh System Data</Button>
+        <Button variant="secondary" onClick={fetchData}>🔄 Refresh System Data</Button>
       </div>
 
       {/* Global Metrics - Only show on dashboard page */}
@@ -361,7 +361,7 @@ const AdminDashboard = () => {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-2">
-                          <div className="w-6 h-6 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-bold transition-colors">ðŸ¢</div>
+                          <div className="w-6 h-6 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-bold transition-colors">🏢</div>
                           <span className="text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors">{j.recruiterName || 'System'}</span>
                         </div>
                       </td>

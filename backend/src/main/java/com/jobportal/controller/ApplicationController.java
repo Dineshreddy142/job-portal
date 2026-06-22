@@ -84,4 +84,11 @@ public class ApplicationController {
         securityUtils.verifyOwnership(authentication, recruiterId);
         return ResponseEntity.ok(applicationService.getMatchedCandidates(recruiterId));
     }
+
+    @GetMapping("/applicant/{applicantId}/ai-scores")
+    @PreAuthorize("hasRole('JOB_SEEKER')")
+    public ResponseEntity<List<AiMatcherDto>> getApplicantAiScores(@PathVariable Long applicantId, Authentication authentication) {
+        securityUtils.verifyOwnership(authentication, applicantId);
+        return ResponseEntity.ok(applicationService.getApplicantAiScores(applicantId));
+    }
 }

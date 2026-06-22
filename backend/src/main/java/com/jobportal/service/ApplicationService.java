@@ -184,6 +184,15 @@ public class ApplicationService {
                 .collect(Collectors.toList());
     }
 
+    public List<AiMatcherDto> getApplicantAiScores(Long applicantId) {
+        log.info("Fetching AI scores for applicant ID: {}", applicantId);
+        List<Application> applications = applicationRepository.findByApplicantId(applicantId);
+        
+        return applications.stream()
+                .map(this::calculateMatchScore)
+                .collect(Collectors.toList());
+    }
+
     private AiMatcherDto calculateMatchScore(Application app) {
         Job job = app.getJob();
         User applicant = app.getApplicant();

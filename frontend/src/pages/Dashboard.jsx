@@ -161,7 +161,7 @@ const Dashboard = () => {
                      <p className="text-sm text-slate-500">{job.companyName || (i === 0 ? 'Google' : i === 1 ? 'Microsoft' : 'Amazon')}</p>
                      <div className="flex items-center gap-4 mt-1 text-[11px] font-medium text-slate-400">
                         <span className="flex items-center gap-1"><MapPin size={12} /> {job.location}</span>
-                        <span className="flex items-center gap-1">ðŸ’° {job.salary}</span>
+                        <span className="flex items-center gap-1">💰 {job.salary}</span>
                      </div>
                    </div>
                 </div>

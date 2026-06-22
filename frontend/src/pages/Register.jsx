@@ -1,4 +1,4 @@
-﻿import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import api from '../services/api';
@@ -85,7 +85,7 @@ const Register = () => {
           <div className="relative z-10 space-y-6">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-primary-400 border border-white/10">
-                ðŸš€
+                🚀
               </div>
               <div>
                 <h4 className="font-bold">Fast & Intuitive</h4>
@@ -150,7 +150,7 @@ const Register = () => {
                       className="block w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all dark:text-white"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                      placeholder="••••••••"
                       required
                     />
                   </div>

@@ -69,7 +69,7 @@ const SecurityDashboard = () => {
     r.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <div className="flex justify-center items-center h-[60vh]"><div className="animate-spin text-4xl">ðŸ›¡ï¸</div></div>;
+  if (loading) return <div className="flex justify-center items-center h-[60vh]"><div className="animate-spin text-4xl">🛡️</div></div>;
 
   return (
     <div className="space-y-10 animate-in fade-in duration-700">
@@ -130,7 +130,7 @@ const SecurityDashboard = () => {
           <Badge variant={activeTab === 'pending' ? 'amber' : 'emerald'} className="px-4 py-1.5 rounded-full">
             {activeTab === 'pending' ? `${recruiters.length} Pending` : `${verifiedRecruiters.length} Verified`}
           </Badge>
-          <Button variant="ghost" onClick={fetchAll}>ðŸ”„ Refresh</Button>
+          <Button variant="ghost" onClick={fetchAll}>🔄 Refresh</Button>
         </div>
       </div>
 
@@ -145,7 +145,7 @@ const SecurityDashboard = () => {
       <div className="grid grid-cols-1 gap-6">
         {filteredRecruiters.length === 0 ? (
           <div className="p-20 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-[3rem]">
-            <div className="text-6xl mb-6">ðŸœï¸</div>
+            <div className="text-6xl mb-6">🕸️</div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No {activeTab} recruiters found</h3>
             <p className="text-slate-500 dark:text-slate-400">
               {activeTab === 'pending' ? 'All requests have been handled.' : 'No recruiters have been verified yet.'}

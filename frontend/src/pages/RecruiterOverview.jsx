@@ -131,7 +131,7 @@ const RecruiterOverview = () => {
                </div>
             </div>
             <h1 className="text-4xl md:text-5xl font-heading font-bold tracking-tight mb-2">
-              Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-200">{user?.name}</span>! ðŸ‘‹
+              Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-200">{user?.name}</span>! 👋
             </h1>
             <p className="text-slate-400 text-lg font-medium max-w-xl">
               You have <span className="text-white">{stats?.totalApplicationsReceived || 0}</span> new applications to review today. Let's find your next star hire.

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../contexts/AuthContext';
 import Button from '../components/common/Button';
@@ -141,14 +141,14 @@ const Jobs = () => {
         </div>
       ) : jobs.length === 0 ? (
         <Card className="p-16 text-center flex flex-col items-center border-dashed border-2 bg-transparent dark:border-slate-800" hover={false}>
-          <div className="text-6xl mb-6 grayscale opacity-50">ðŸ’¼</div>
+          <div className="text-6xl mb-6 grayscale opacity-50">💼</div>
           <h3 className="text-2xl font-heading font-bold text-slate-900 dark:text-white mb-2">No jobs available</h3>
           <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-sm">We're waiting for recruiters to post new opportunities. Check back later!</p>
           <Button onClick={fetchData} variant="secondary">Refresh Feed</Button>
         </Card>
       ) : filteredJobs.length === 0 ? (
         <div className="text-center py-20 transition-colors">
-          <div className="text-4xl mb-4">ðŸ”</div>
+          <div className="text-4xl mb-4">🔍</div>
           <p className="text-slate-500 dark:text-slate-400 text-lg transition-colors">No matches found for "<span className="font-bold text-slate-900 dark:text-white">{searchTerm}</span>"</p>
           <Button variant="ghost" onClick={() => setSearchTerm('')} className="mt-4">Clear all filters</Button>
         </div>
@@ -190,12 +190,12 @@ const Jobs = () => {
                   <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-4 transition-colors">{job.recruiterName || 'Global Corp'}</p>
                   
                   <div className="flex flex-wrap gap-2 mb-6">
-                    <Badge variant="blue">ðŸ“ {job.location}</Badge>
-                    <Badge variant="green">â‚¹ {job.salary}</Badge>
-                    <Badge variant="yellow">ðŸ•’ {job.jobType?.replace('_', ' ')}</Badge>
+                    <Badge variant="blue">📍 {job.location}</Badge>
+                    <Badge variant="green">₹ {job.salary}</Badge>
+                    <Badge variant="yellow">🕒 {job.jobType?.replace('_', ' ')}</Badge>
                     {job.deadline && (
                       <Badge variant={new Date(job.deadline) < new Date() ? 'red' : 'indigo'}>
-                        âŒ› {new Date(job.deadline) < new Date() ? 'Expired' : `Ends: ${new Date(job.deadline).toLocaleDateString()}`}
+                        ⌛ {new Date(job.deadline) < new Date() ? 'Expired' : `Ends: ${new Date(job.deadline).toLocaleDateString()}`}
                       </Badge>
                     )}
                   </div>

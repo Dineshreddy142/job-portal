@@ -205,7 +205,7 @@ const RecruiterDashboard = () => {
           <p className="text-slate-500 dark:text-slate-400 font-medium transition-colors">Welcome back, {user.name}. Here's what's happening today.</p>
         </div>
         <div className="flex gap-3">
-           <Button variant="secondary" onClick={fetchData}>ðŸ”„ Sync Data</Button>
+           <Button variant="secondary" onClick={fetchData}>🔄 Sync Data</Button>
            <Button 
             onClick={() => { 
               if (!user.isVerified) {
@@ -218,16 +218,16 @@ const RecruiterDashboard = () => {
             className={!user.isVerified ? 'bg-slate-400 cursor-not-allowed opacity-50' : ''}
             disabled={!user.isVerified}
            >
-            {user.isVerified ? '+ Create New Listing' : 'ðŸš« Verification Pending'}
+            {user.isVerified ? '+ Create New Listing' : '🚫 Verification Pending'}
            </Button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: 'Total Jobs', value: stats.totalJobsPosted, icon: 'ðŸ’¼', color: 'indigo' },
-          { label: 'Total Applicants', value: stats.totalApplicationsReceived, icon: 'ðŸ“¥', color: 'blue' },
-          { label: 'Active Openings', value: stats.activeJobs, icon: 'ðŸŸ¢', color: 'emerald' },
+          { label: 'Total Jobs', value: stats.totalJobsPosted, icon: '💼', color: 'indigo' },
+          { label: 'Total Applicants', value: stats.totalApplicationsReceived, icon: '📥', color: 'blue' },
+          { label: 'Active Openings', value: stats.activeJobs, icon: '🟢', color: 'emerald' },
           { label: 'Shortlisted', value: stats.shortlistedCandidates, icon: 'â­', color: 'amber' },
         ].map((stat, i) => (
           <Card key={i} className="p-6 flex items-center space-x-4 border-l-4 border-l-primary-500" hover={false}>
@@ -282,7 +282,7 @@ const RecruiterDashboard = () => {
                   </div>
                   <div className="flex items-center space-x-4 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 transition-colors">
                     <span>ðŸ“ {job.location}</span>
-                    <span>ðŸ’° {job.salary}</span>
+                    <span>💰 {job.salary}</span>
                   </div>
                   <div className="flex justify-between items-center pt-4 border-t border-slate-100 dark:border-slate-800 transition-colors">
                     <button 
@@ -313,7 +313,7 @@ const RecruiterDashboard = () => {
                 {selectedJob && <p className="text-[10px] text-slate-400 mt-1 uppercase font-bold tracking-widest">{applications.length} Candidates total</p>}
               </div>
               {selectedJob && applications.length > 0 && (
-                <Button variant="emerald" size="sm" onClick={downloadCSV}>ðŸ“¥ Export CSV</Button>
+                <Button variant="emerald" size="sm" onClick={downloadCSV}>📥 Export CSV</Button>
               )}
             </div>
             
@@ -331,12 +331,12 @@ const RecruiterDashboard = () => {
             <div className="p-6 max-h-[700px] overflow-y-auto space-y-6">
               {appsLoading ? (
                 <div className="text-center py-20 transition-colors">
-                  <div className="animate-spin text-4xl mb-4 text-primary-600 dark:text-primary-400">âŒ›</div>
+                  <div className="animate-spin text-4xl mb-4 text-primary-600 dark:text-primary-400">⌛</div>
                   <p className="text-slate-500 dark:text-slate-400 font-medium">Fetching candidates...</p>
                 </div>
               ) : !selectedJob ? (
                 <div className="text-center py-20 text-slate-400 dark:text-slate-500 flex flex-col items-center transition-colors">
-                  <div className="text-6xl mb-6">ðŸŽ¯</div>
+                  <div className="text-6xl mb-6">🎯</div>
                   <p className="text-sm font-medium">Select a job from the list to start reviewing talent.</p>
                 </div>
               ) : filteredApplicants.length === 0 ? (
