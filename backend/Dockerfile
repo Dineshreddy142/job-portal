@@ -5,7 +5,6 @@ WORKDIR /app
 # Copy the pom.xml and download dependencies
 # This is done first so that dependencies are cached by Docker unless pom.xml changes
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
 
 # Copy the source code and build the application
 COPY src src
