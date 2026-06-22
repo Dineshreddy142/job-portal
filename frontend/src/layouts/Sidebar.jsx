@@ -1,4 +1,4 @@
-﻿import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { 
@@ -16,7 +16,8 @@ import {
   PlusCircle,
   ShieldCheck,
   Bell,
-  MessageSquare
+  MessageSquare,
+  Mail
 } from 'lucide-react';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -55,6 +56,7 @@ const Sidebar = () => {
     { name: 'Applied Jobs', path: '/my-applications', icon: ClipboardList },
     { name: 'Saved Jobs', path: '/saved-jobs', icon: Bookmark },
     { name: 'My Interviews', path: '/interviews', icon: MessageSquare },
+    { name: 'Mail Inbox', path: '/inbox', icon: Mail },
     { name: 'Notifications', path: '/notifications', icon: Bell, badge: unreadCount },
     { name: 'Profile Setting', path: '/profile', icon: UserCircle },
   ];
@@ -64,6 +66,7 @@ const Sidebar = () => {
     { name: 'Post Job', path: '/recruiter/post-job', icon: PlusCircle },
     { name: 'Manage Jobs', path: '/recruiter/jobs', icon: Briefcase },
     { name: 'Applications', path: '/recruiter/applicants', icon: Users },
+    { name: 'Mail Inbox', path: '/inbox', icon: Mail },
     { name: 'Profile Setting', path: '/recruiter/profile', icon: UserCircle },
     { name: 'Analytics', path: '/recruiter/analytics', icon: BarChart3 },
   ];
@@ -100,9 +103,7 @@ const Sidebar = () => {
       {/* Sidebar Logo */}
       <div className="p-6">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-[#0052cc] rounded-lg flex items-center justify-center text-white shadow-sm">
-            <Briefcase size={22} fill="currentColor" />
-          </div>
+          <img src="/logo.png" alt="Job Portal Logo" className="w-10 h-10 rounded-lg shadow-sm" />
           <div className="flex flex-col">
             <span className="text-lg font-heading font-bold text-slate-900 dark:text-white leading-tight">Job Portal</span>
             <span className="text-[10px] text-slate-400 font-medium tracking-tight">Find Your Dream Job</span>

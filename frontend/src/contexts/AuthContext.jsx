@@ -84,6 +84,52 @@ export const AuthProvider = ({ children }) => {
         return { ...data, role: normalizedRole };
     };
 
+    const loginWithGoogle = async (authCode) => {
+        const payload = { code: authCode };
+        
+        try {
+            const response = await api.post('/auth/google', payload);
+            if (response.status === 202 && response.data.status === 'NEW_USER_ROLE_REQUIRED') {
+                // Return pendingToken from server so we can complete registration
+                return {
+                    status: 'NEW_USER_ROLE_REQUIRED',
+                    pendingToken: response.data.pendingToken,
+                    email: response.data.email,
+                    name: response.data.name,
+                };
+            }
+
+            const data = response.data;
+            const normalizedRole = normalizeRole(data.role);
+            localStorage.setItem('token', data.token);
+            const userData = { id: data.id, name: data.name, email: data.email, role: normalizedRole, position: data.position, profilePicture: data.profilePicture, companyIdCard: data.companyIdCard, isVerified: data.isVerified };
+            localStorage.setItem('user', JSON.stringify(userData));
+            setUser(userData);
+            return { ...data, role: normalizedRole, status: 'SUCCESS' };
+        } catch (error) {
+            if (error.response?.status === 202 && error.response?.data?.status === 'NEW_USER_ROLE_REQUIRED') {
+                return {
+                    status: 'NEW_USER_ROLE_REQUIRED',
+                    pendingToken: error.response.data.pendingToken,
+                    email: error.response.data.email,
+                    name: error.response.data.name,
+                };
+            }
+            throw error;
+        }
+    };
+
+    const completeGoogleLogin = async (pendingToken, role) => {
+        const response = await api.post('/auth/google/complete', { pendingToken, role });
+        const data = response.data;
+        const normalizedRole = normalizeRole(data.role);
+        localStorage.setItem('token', data.token);
+        const userData = { id: data.id, name: data.name, email: data.email, role: normalizedRole, position: data.position, profilePicture: data.profilePicture, companyIdCard: data.companyIdCard, isVerified: data.isVerified };
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
+        return { ...data, role: normalizedRole };
+    };
+
     const register = async (name, email, password, role, otp) => {
         const response = await api.post('/auth/register', { name, email, password, role, otp });
         const data = response.data;
@@ -103,7 +149,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, register, logout, loading, updateUser }}>
+        <AuthContext.Provider value={{ user, login, loginWithGoogle, completeGoogleLogin, register, logout, loading, updateUser }}>
             {children}
         </AuthContext.Provider>
     );

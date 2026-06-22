@@ -17,3 +17,14 @@ services:
         sync: false
       - key: CORS_ALLOWED_ORIGINS
         sync: false
+
+  - type: web
+    name: job-portal-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://job-portal-backend.onrender.com/api
+        # NOTE: You will need to change the domain part to match your actual backend Render URL later.

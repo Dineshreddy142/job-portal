@@ -15,7 +15,8 @@ import {
   Eye, 
   BarChart3,
   PieChart,
-  ArrowUpRight
+  ArrowUpRight,
+  Flag
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -36,6 +37,7 @@ const AdminDashboard = () => {
   const [stats, setStats] = useState({ totalUsers: 0, totalJobs: 0, totalApplications: 0, totalRecruiters: 0 });
   const [users, setUsers] = useState([]);
   const [jobs, setJobs] = useState([]);
+  const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterRole, setFilterRole] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
@@ -54,14 +56,16 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [statsRes, usersRes, jobsRes] = await Promise.all([
+      const [statsRes, usersRes, jobsRes, reportsRes] = await Promise.all([
         api.get('/admin/stats'),
         api.get('/admin/users'),
-        api.get('/jobs')
+        api.get('/jobs'),
+        api.get('/admin/reports')
       ]);
       setStats(statsRes.data);
       setUsers(usersRes.data);
       setJobs(jobsRes.data);
+      setReports(reportsRes.data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -88,6 +92,15 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleUpdateReportStatus = async (reportId, status) => {
+    try {
+      await api.put(`/admin/reports/${reportId}/status?status=${status}`);
+      fetchData();
+    } catch (err) {
+      alert('Failed to update report status');
+    }
+  };
+
   const filteredUsers = users.filter(u => {
     const matchesRole = filterRole === 'ALL' || u.role === filterRole;
     const matchesSearch = u.name.toLowerCase().includes(searchQuery.toLowerCase()) || u.email.toLowerCase().includes(searchQuery.toLowerCase());
@@ -96,6 +109,11 @@ const AdminDashboard = () => {
 
   const filteredJobs = jobs.filter(j => 
     j.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredReports = reports.filter(r => 
+    r.reason.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    (r.reportedJobTitle && r.reportedJobTitle.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   if (loading) return <div className="text-center py-20 font-bold text-slate-500 dark:text-slate-400">Initializing Administrator Hub...</div>;
@@ -258,17 +276,27 @@ const AdminDashboard = () => {
           >
             Manage Job Listings
           </button>
+          <button 
+            onClick={() => setActiveTab('REPORTS')}
+            className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center ${activeTab === 'REPORTS' ? 'bg-white dark:bg-slate-800 text-rose-600 shadow-sm' : 'text-slate-500 hover:text-rose-500'}`}
+          >
+            <Flag size={14} className="mr-1.5" />
+            Flagged Content
+            {reports.filter(r => r.status === 'PENDING').length > 0 && (
+              <span className="ml-2 bg-rose-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">{reports.filter(r => r.status === 'PENDING').length}</span>
+            )}
+          </button>
         </div>
 
         <Card className="p-0 overflow-hidden border-slate-200 dark:border-slate-800" hover={false}>
           <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/50 dark:bg-slate-900/50 transition-colors">
             <h3 className="text-xl font-heading font-bold text-slate-900 dark:text-white">
-              {activeTab === 'USERS' ? 'Platform Accounts' : 'Job Repository'}
+              {activeTab === 'USERS' ? 'Platform Accounts' : activeTab === 'JOBS' ? 'Job Repository' : 'Reported Content'}
             </h3>
             <div className="flex flex-col md:flex-row gap-3">
               <input 
                 type="text" 
-                placeholder={activeTab === 'USERS' ? "Search by name or email..." : "Search by job title..."} 
+                placeholder={activeTab === 'USERS' ? "Search by name or email..." : activeTab === 'JOBS' ? "Search by job title..." : "Search reports..."} 
                 className="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/20 outline-none w-full md:w-64 dark:text-white transition-all"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -342,7 +370,7 @@ const AdminDashboard = () => {
                   ))}
                 </tbody>
               </table>
-            ) : (
+            ) : activeTab === 'JOBS' ? (
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-slate-50 dark:bg-slate-900 text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-widest border-b border-slate-100 dark:border-slate-800 transition-colors">
@@ -387,7 +415,59 @@ const AdminDashboard = () => {
                   ))}
                 </tbody>
               </table>
-            )}
+            ) : activeTab === 'REPORTS' ? (
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="bg-slate-50 dark:bg-slate-900 text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-widest border-b border-slate-100 dark:border-slate-800 transition-colors">
+                    <th className="px-6 py-4">Report Details</th>
+                    <th className="px-6 py-4">Reported Target</th>
+                    <th className="px-6 py-4">Status</th>
+                    <th className="px-6 py-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {filteredReports.map(r => (
+                    <tr key={r.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                      <td className="px-6 py-4">
+                        <p className="font-bold text-slate-900 dark:text-white text-sm transition-colors">{r.reason}</p>
+                        <p className="text-xs text-slate-500 transition-colors">Reported by {r.reporterName} on {new Date(r.createdAt).toLocaleDateString()}</p>
+                      </td>
+                      <td className="px-6 py-4">
+                        {r.reportedJobId ? (
+                          <div className="flex items-center space-x-2">
+                            <Briefcase size={14} className="text-blue-500" />
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Job: {r.reportedJobTitle}</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center space-x-2">
+                            <Users size={14} className="text-purple-500" />
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">User: {r.reportedUserName}</span>
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        <Badge variant={r.status === 'PENDING' ? 'amber' : r.status === 'ACTION_TAKEN' ? 'red' : 'green'}>
+                          {r.status}
+                        </Badge>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex items-center justify-end space-x-2">
+                           {r.status === 'PENDING' && (
+                             <>
+                               <Button size="sm" variant="success" className="text-[10px]" onClick={() => handleUpdateReportStatus(r.id, 'DISMISSED')}>Dismiss</Button>
+                               <Button size="sm" variant="danger" className="text-[10px]" onClick={() => {
+                                  if (r.reportedJobId) handleDeleteJob(r.reportedJobId);
+                                  handleUpdateReportStatus(r.id, 'ACTION_TAKEN');
+                               }}>Delete Job</Button>
+                             </>
+                           )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : null}
           </div>
         </Card>
       </div>

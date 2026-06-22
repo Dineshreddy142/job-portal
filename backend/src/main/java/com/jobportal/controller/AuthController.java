@@ -5,6 +5,7 @@ import java.util.Map;
 import com.jobportal.dto.LoginRequest;
 import com.jobportal.dto.RegisterRequest;
 import com.jobportal.service.AuthService;
+import com.jobportal.service.GoogleOAuthService;
 import com.jobportal.service.PasswordResetService;
 import com.jobportal.dto.ForgotPasswordRequest;
 import com.jobportal.dto.ResetPasswordRequest;
@@ -21,6 +22,56 @@ public class AuthController {
     private final AuthService authService;
     private final PasswordResetService passwordResetService;
     private final com.jobportal.service.OtpService otpService;
+    private final GoogleOAuthService googleOAuthService;
+
+    @PostMapping("/google")
+    public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> body) {
+        String authCode = body.get("code");
+
+        if (authCode == null || authCode.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Google authorization code is required"));
+        }
+
+        try {
+            Map<String, Object> result = googleOAuthService.authenticateWithGoogle(authCode);
+            String status = (String) result.get("status");
+
+            if ("NEW_USER_ROLE_REQUIRED".equals(status)) {
+                // Return pendingToken + email + name so frontend can show role selection
+                return ResponseEntity.status(202).body(Map.of(
+                        "status", "NEW_USER_ROLE_REQUIRED",
+                        "pendingToken", result.get("pendingToken"),
+                        "email", result.get("email"),
+                        "name", result.get("name")
+                ));
+            }
+
+            return ResponseEntity.ok(result.get("authResponse"));
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/google/complete")
+    public ResponseEntity<?> googleComplete(@RequestBody Map<String, String> body) {
+        String pendingToken = body.get("pendingToken");
+        String role = body.get("role");
+
+        if (pendingToken == null || pendingToken.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Pending token is required"));
+        }
+        if (role == null || role.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Role is required"));
+        }
+
+        try {
+            AuthResponse response = googleOAuthService.completeGoogleRegistration(pendingToken, role);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
 
     @PostMapping("/send-otp")
     public ResponseEntity<Void> sendOtp(@RequestBody Map<String, String> request) {

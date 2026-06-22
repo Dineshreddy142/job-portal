@@ -1,4 +1,4 @@
-﻿import React, { useContext } from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -34,7 +34,7 @@ const RecruiterSidebar = () => {
     <div className="w-64 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-r border-slate-200 dark:border-slate-800 h-screen fixed left-0 top-0 flex flex-col z-50 transition-all shadow-xl">
       <div className="p-8">
         <div className="flex items-center space-x-3 group cursor-pointer">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">J</div>
+          <img src="/logo.png" alt="Job Portal Logo" className="w-10 h-10 rounded-xl shadow-lg group-hover:scale-110 transition-transform" />
           <div className="flex flex-col">
             <span className="text-xl font-heading font-bold text-slate-900 dark:text-white tracking-tighter leading-none">Job Portal</span>
             <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] mt-1">

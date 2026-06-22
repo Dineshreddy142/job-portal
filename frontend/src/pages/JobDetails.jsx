@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import { AuthContext } from '../contexts/AuthContext';
@@ -30,6 +30,8 @@ const JobDetails = () => {
   const [hasApplied, setHasApplied] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportReason, setReportReason] = useState('');
 
   useEffect(() => {
     fetchJobDetails();
@@ -95,6 +97,27 @@ const JobDetails = () => {
       setIsSaved(!isSaved);
     } catch (err) {
       console.error("Error toggling save:", err);
+    }
+  };
+
+  const handleReport = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    try {
+      await api.post('/reports', {
+        reporterId: user.id,
+        reportedJobId: id,
+        reportedUserId: job.recruiterId,
+        reason: reportReason
+      });
+      setShowReportModal(false);
+      alert("Report submitted successfully. Our team will review this shortly.");
+    } catch (err) {
+      console.error("Report error:", err);
+      alert("Failed to submit report.");
     }
   };
 
@@ -297,11 +320,57 @@ const JobDetails = () => {
                  </div>
               </Card>
             )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+            
+            <div className="pt-4 flex justify-center">
+                <button 
+                  onClick={() => setShowReportModal(true)}
+                  className="text-sm font-bold text-slate-400 hover:text-rose-500 flex items-center transition-colors"
+                >
+                  <AlertCircle size={16} className="mr-1.5" />
+                  Report this job
+                </button>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       {/* Report Modal */}
+       {showReportModal && (
+         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+           <Card className="w-full max-w-md p-8 rounded-[2rem] shadow-2xl animate-in zoom-in-95 duration-200">
+             <div className="flex items-center space-x-3 text-rose-500 mb-6">
+               <AlertCircle size={28} />
+               <h3 className="text-2xl font-bold text-slate-900 dark:text-white">Report Job</h3>
+             </div>
+             <p className="text-slate-600 dark:text-slate-400 font-medium mb-6">
+               Help us keep the platform safe. Why are you reporting this job?
+             </p>
+             <form onSubmit={handleReport} className="space-y-6">
+               <div className="space-y-3">
+                 {['Suspicious/Scam', 'Offensive Content', 'Spam/Duplicate', 'Incorrect Information', 'Other'].map(reason => (
+                   <label key={reason} className="flex items-center space-x-3 p-4 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                     <input 
+                       type="radio" 
+                       name="reportReason" 
+                       value={reason}
+                       required
+                       onChange={(e) => setReportReason(e.target.value)}
+                       className="w-4 h-4 text-rose-600 focus:ring-rose-500"
+                     />
+                     <span className="font-bold text-slate-700 dark:text-slate-300">{reason}</span>
+                   </label>
+                 ))}
+               </div>
+               <div className="flex gap-4 pt-4">
+                 <Button variant="secondary" className="flex-1" type="button" onClick={() => setShowReportModal(false)}>Cancel</Button>
+                 <Button className="flex-1 bg-rose-600 hover:bg-rose-700 text-white shadow-lg shadow-rose-500/30" type="submit">Submit Report</Button>
+               </div>
+             </form>
+           </Card>
+         </div>
+       )}
+     </div>
+   );
 };
 
 export default JobDetails;

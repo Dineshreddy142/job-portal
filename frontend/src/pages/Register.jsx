@@ -76,6 +76,7 @@ const Register = () => {
         {/* Left Side: Branding */}
         <div className="hidden lg:flex w-1/2 bg-slate-900 p-12 flex-col justify-between relative overflow-hidden text-white">
           <div className="relative z-10">
+            <img src="/logo.png" alt="Job Portal Logo" className="w-16 h-16 rounded-2xl shadow-lg mb-6" />
             <h2 className="text-4xl font-heading font-bold mb-4 tracking-tight leading-tight">Start your journey with us today</h2>
             <p className="text-slate-400 text-lg">Join thousands of companies and job seekers already using our platform.</p>
           </div>

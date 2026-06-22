@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -18,6 +18,7 @@ import Profile from './pages/Profile';
 import Jobs from './pages/Jobs';
 import MyApplications from './pages/MyApplications';
 import Notifications from './pages/Notifications';
+import MailInbox from './pages/MailInbox';
 import MainLayout from './layouts/MainLayout';
 import Dashboard from './pages/Dashboard';
 import JobDetails from './pages/JobDetails';
@@ -80,6 +81,11 @@ const App = () => {
           <Route path="/notifications" element={
             <ProtectedRoute>
               <Notifications />
+            </ProtectedRoute>
+          } />
+          <Route path="/inbox" element={
+            <ProtectedRoute>
+              <MailInbox />
             </ProtectedRoute>
           } />
 
