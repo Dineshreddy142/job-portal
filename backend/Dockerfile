@@ -14,8 +14,11 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
-# Create a non-root user for security
-RUN groupadd -r spring && useradd -r -g spring spring
+# Create a non-root user for security and set up uploads directory
+RUN groupadd -r spring && useradd -r -g spring spring \
+    && mkdir -p /app/uploads/resumes \
+    && chown -R spring:spring /app
+
 USER spring:spring
 
 # Copy the built jar file from the build stage
