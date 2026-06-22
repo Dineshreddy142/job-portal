@@ -2,7 +2,7 @@ services:
   - type: web
     name: job-portal-backend
     env: docker
-    dockerfilePath: ./backend/Dockerfile
+    dockerfilePath: ./Dockerfile
     rootDir: backend
     envVars:
       - key: SPRING_DATASOURCE_URL
