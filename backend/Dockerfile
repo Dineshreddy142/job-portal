@@ -25,7 +25,7 @@ USER spring:spring
 COPY --from=build /app/target/*.jar app.jar
 
 # Expose the application port
-EXPOSE 8080
+EXPOSE 10000
 
 # Run the jar file
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
