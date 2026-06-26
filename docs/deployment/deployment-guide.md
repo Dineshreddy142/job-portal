@@ -54,11 +54,11 @@ It's highly recommended to place Nginx in front of your Docker containers to han
 
 ---
 
-## Strategy 2: Cloud PaaS (Railway / Render / Heroku)
+## Strategy 2: Cloud PaaS (Render / Heroku)
 
 If you prefer not to manage servers, you can use PaaS providers. This requires deploying the frontend and backend separately.
 
-### Backend Deployment (e.g., Railway/Render)
+### Backend Deployment (e.g., Render)
 1. **Database**: Create a managed MySQL/PostgreSQL database in your cloud provider.
 2. **App Service**: Connect your GitHub repository and point the root directory to `/backend`.
 3. **Environment Variables**: Add the database connection string and your `JWT_SECRET` in the provider's dashboard.
