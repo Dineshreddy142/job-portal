@@ -23,6 +23,7 @@ USER spring:spring
 
 # Copy the built jar file from the build stage
 COPY --from=build /app/target/*.jar app.jar
+COPY src/main/resources/truststore.jks /app/truststore.jks
 
 # Expose the application port
 EXPOSE 10000
